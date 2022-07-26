@@ -1,0 +1,316 @@
+CREATE TABLE Cliente (
+CF_Cliente char(16) NOT NULL, 
+Nome varchar(50) NOT NULL, 
+Cognome varchar(50) NOT NULL, 
+DataNascita char(10) NOT NULL, 
+Residenza varchar(50) NOT NULL, 
+Sesso char(1) NOT NULL, 
+Impiego varchar(50) NOT NULL, 
+Email varchar(50), 
+NumTelefono varchar(16) NOT NULL,
+PRIMARY KEY (CF_Cliente)
+);
+
+CREATE TABLE Dottore (
+CF_Dottore char(16) NOT NULL, 
+Nome varchar(50) NOT NULL, 
+Cognome varchar(50) NOT NULL, 
+DataNascita char(10) NOT NULL, 
+Residenza varchar(50) NOT NULL, 
+Sesso char(1) NOT NULL, 
+Impiego varchar(50) NOT NULL, 
+Email varchar(50), 
+NumTelefono varchar(16) NOT NULL,
+PRIMARY KEY (CF_Dottore)
+);
+
+CREATE TABLE Istruttore (
+CF_Istruttore char(16) NOT NULL, 
+Nome varchar(50) NOT NULL, 
+Cognome varchar(50) NOT NULL, 
+DataNascita char(10) NOT NULL, 
+Residenza varchar(50) NOT NULL, 
+Sesso char(1) NOT NULL, 
+Impiego varchar(50) NOT NULL, 
+Email varchar(50), 
+NumTelefono varchar(16) NOT NULL,
+Tipo char(7) NOT NULL,
+PRIMARY KEY (CF_Istruttore)
+);
+
+CREATE TABLE Visita (
+Data char(10) NOT NULL,
+Ora time NOT NULL,
+CF_Cliente char(16) NOT NULL,
+CF_Dottore char(16) NOT NULL,
+PRIMARY KEY (Data, Ora, CF_Cliente),
+UNIQUE (Data, Ora, CF_Dottore),
+FOREIGN KEY (CF_Cliente) REFERENCES Cliente(CF_Cliente),
+FOREIGN KEY (CF_Dottore) REFERENCES Dottore(CF_Dottore)
+);
+
+
+CREATE TABLE Allenamento (
+Data char(10) NOT NULL,
+Ora time NOT NULL,
+CF_Cliente char(16) NOT NULL,
+CF_Istruttore char(16) NOT NULL,
+PRIMARY KEY (Data, Ora, CF_Cliente),
+FOREIGN KEY (CF_Cliente) REFERENCES Cliente(CF_Cliente),
+FOREIGN KEY (CF_Istruttore) REFERENCES Istruttore(CF_Istruttore)
+);
+
+CREATE TABLE Corso (
+NomeCorso varchar(50) NOT NULL,
+Descrizione varchar(255) NOT NULL,
+PRIMARY KEY (NomeCorso)
+);
+
+
+CREATE TABLE Iscrizione (
+CF_Cliente char(16) NOT NULL,
+Anno year NOT NULL,
+NomeCorso varchar(50) NOT NULL,
+PRIMARY KEY (CF_Cliente, Anno, NomeCorso),
+FOREIGN KEY (CF_Cliente) REFERENCES Cliente(CF_Cliente),
+FOREIGN KEY (NomeCorso) REFERENCES Corso(NomeCorso)
+);
+
+CREATE TABLE Corso_Attivo (
+CF_Istruttore char(16) NOT NULL,
+Anno year NOT NULL,
+NomeCorso varchar(50) NOT NULL,
+PRIMARY KEY (Anno, NomeCorso),
+FOREIGN KEY (CF_Istruttore) REFERENCES Istruttore(CF_Istruttore),
+FOREIGN KEY (NomeCorso) REFERENCES Corso(NomeCorso)
+);
+
+CREATE TABLE Lezione(
+Sala int(1) NOT NULL,
+GiornoSettimana int(1) NOT NULL,
+Ora time NOT NULL,
+NomeCorso varchar(50) NOT NULL,
+Anno year NOT NULL,
+PRIMARY KEY (Sala, GiornoSettimana, Ora),
+FOREIGN KEY (NomeCorso) REFERENCES Corso(NomeCorso),
+FOREIGN KEY (Anno) REFERENCES Corso_Attivo(Anno)
+);
+
+
+
+INSERT INTO dottore (CF_Dottore,Nome,Cognome,DataNascita,Residenza,Sesso,Impiego,Email,NumTelefono)
+VALUES
+  ("HSMHVE57R92H535W","Pamela","Trevino","23/08/1979","Ap #786-7467 Enim, Road","M","Geriatric","tristique.aliquet@outlook.com","335 9256098175"),
+  ("TXREPW67X93O932T","Zenaida","Shaffer","31/08/1988","Ap #753-454 Bibendum Avenue","M","Planner","rhoncus.donec@protonmail.com","554 2302965"),
+  ("HTSMEL51L47O268T","Dalton","Walls","31/08/1984","Ap #269-205 In Avenue","F","Community","purus.in@outlook.edu","334 2568786336"),
+  ("ETRKKF31X32T621B","Armand","Fulton","13/06/1964","266-497 Urna, Avenue","F","Force","velit.quisque@aol.org","694 3059077"),
+  ("OXSLKH78K51U708G","Beatrice","Byrd","17/01/1990","Ap #881-9496 Nunc Street","M","Copy","rhoncus.donec@google.couk","337 0122165792");
+  
+
+
+INSERT INTO istruttore (CF_Istruttore,Nome,Cognome,DataNascita,Residenza,Sesso,Impiego,Email,NumTelefono,Tipo)
+VALUES
+  ("JEUQMY69J35N080C","Otto","Bates","16/09/1981","Ap #839-2004 Nullam St.","M","Clutch","mus.proin.vel@yahoo.ca","349 0991266","Interno"),
+  ("RJBGJW15X72O632H","Erasmus","Pena","08/02/1969","Ap #512-9784 Mattis. Avenue","M","Track","sapien@icloud.couk","348 8214520","Interno"),
+  ("NVSWMG87H22G207F","Celeste","Hogan","18/09/1963","Ap #242-862 Dui, Rd.","F","Golf","iaculis.odio.nam@aol.edu","346 1440632","Interno"),
+  ("FLPJLH05P51V527D","Keaton","Waters","02/07/1962","Ap #959-6087 Aliquam Rd.","F","Hay","vestibulum.nec.euismod@hotmail.ca","341 3785316","Interno"),
+  ("IEGEIW06K82Q812B","Gail","Turner","20/01/1984","6102 Vitae Avenue","M","Missiles)","varius.nam@protonmail.ca","330 7743167824","Interno"),
+  ("WCXRPR83N56S788H","Freya","Trujillo","29/01/1965","190-210 Mauris. Avenue","M","Dry","nunc.id.enim@outlook.ca","173 2421760","Esterno"),
+  ("MXZTXM17K61A868S","Imelda","Kennedy","08/10/1992","Ap #904-3779 Arcu. Street","M","Metal","aliquam@protonmail.net","341 1752453","Esterno"),
+  ("DKFRBE51W59V512F","Damon","Roth","17/12/1961","P.O. Box 245, 2628 Lacinia. Rd.","F","Officer","nascetur.ridiculus@google.net","718 1855435","Esterno"),
+  ("RSWNHX86Q25J811M","Tanner","Branch","16/03/1974","972-9220 Ridiculus St.","F","Clerk","lobortis.ultrices@google.org","348 2971435","Esterno"),
+  ("TFQBEA83O87B334Q","Evan","Smith","10/06/1982","Ap #528-6660 Magna. St.","M","Automation","ipsum.dolor@aol.com","343 8342553","Esterno");
+
+
+
+INSERT INTO cliente (CF_Cliente,Nome,Cognome,DataNascita,Residenza,Sesso,Impiego,Email,NumTelefono)
+VALUES
+  ("AQQGWB32D23C237M","Tobias","Harvey","27/07/1980","P.O. Box 858, 5573 Dictum Av.","M","Sound","urna.vivamus@protonmail.couk","376 2151863"),
+  ("VBBULC76D42D785B","Wayne","O'connor","03/05/1983","9103 In Avenue","M","Colorist","nunc.quis@google.edu","268 5158550"),
+  ("XRURDP86C40T311M","Sawyer","Mathews","27/02/1968","Ap #112-5756 Tincidunt, Street","F","Network","euismod.ac@google.net","725 0026805"),
+  ("YZRBHM34R73L166M","Allen","Kerr","08/11/1965","959-4221 Risus, Street","F","Advisor","nulla.in@google.com","334 0734727158"),
+  ("VPKHFW75H67R501I","Olivia","Mcclure","24/01/1987","917-4552 Libero Road","M","Materiel","et@google.ca","335 1534248377"),
+  ("NWKDJV42O39G556U","Evangeline","Mcgowan","15/12/1998","8025 Sit Road","M","Engineer","justo.eu@outlook.net","344 1119685"),
+  ("VGYOUO66K16T383I","Nathaniel","Soto","24/09/1977","Ap #737-2223 Cum Rd.","M","Psychiatrist","justo@hotmail.ca","551 1461312"),
+  ("PZJXEQ75I55N721T","Dieter","Wallace","27/04/1992","P.O. Box 358, 8943 Quisque St.","F","Airport","elit@icloud.org","339 0524837304"),
+  ("HSNTTU58J77S135G","Tucker","Bond","04/04/1990","393-5438 Posuere, St.","F","Insurance","eu@hotmail.com","346 3869322"),
+  ("DVGQUR26I89M588U","Brenna","Aguilar","13/04/1971","Ap #557-7538 Sollicitudin Road","M","Auto","sed.pede@outlook.edu","278 9644172"),
+  ("WLQJCZ59L72B453I","Carissa","Montoya","17/09/1963","372-2928 Vitae Rd.","M","Scorer","diam.proin@protonmail.edu","347 8789281"),
+  ("OLCIZD52W66F369Q","Helen","Mckenzie","28/07/1983","Ap #654-2665 Elementum Road","M","Transportation","augue.eu@hotmail.edu","347 3378468"),
+  ("SFIFRY33R52X724Q","Kelsey","Powers","25/05/1972","5784 Dolor, St.","F","Cleaning","neque@google.couk","347 4837317"),
+  ("EWWWIA65J65V865G","Chandler","Gilliam","18/01/1962","6691 Luctus Road","F","Maintenance","suspendisse.tristique.neque@icloud.couk","343 3122460"),
+  ("PXXCAG16V19W574D","Naomi","Fuentes","29/05/1996","Ap #298-5258 Tempor Av.","M","Scorer","commodo@icloud.edu","807 8198981"),
+  ("EUXRWL53F36D016B","Mia","Buchanan","03/09/1985","778-333 Risus. St.","M","Operator","amet.ornare@protonmail.couk","340 0963275"),
+  ("IHOLDD13D53K246O","Colton","Garrison","14/02/1990","514-7383 Pede. Street","M","Clerk","nulla.tempor.augue@hotmail.com","316 0676943"),
+  ("TKDMXY88E44F662C","Brendan","Miranda","26/11/1991","Ap #970-8681 Arcu. Street","F","Colorist","mi.aliquam@aol.org","344 9689745"),
+  ("THPLSM29F61H830Y","Logan","Kemp","20/11/1993","Ap #859-4374 Rutrum Av.","F","Designer","arcu.iaculis.enim@protonmail.edu","341 6360699"),
+  ("JYNJTH45U12U568Y","Mallory","Mercado","05/09/1993","Ap #542-5144 Adipiscing St.","M","Military","elit.pede@hotmail.couk","327 8786507"),
+  ("FQRCPO58U48B059R","Sydney","Gilliam","25/08/2000","P.O. Box 139, 7127 Vitae, Rd.","M","Laborer","condimentum.eget@aol.org","339 3313318477"),
+  ("KLKTON31E94F335O","Jemima","Mullins","03/08/1961","P.O. Box 305, 7883 Lorem Road","M","Soap","fringilla.cursus.purus@icloud.net","338 0143219736"),
+  ("KGCJKH52W45I443R","Maggy","Logan","30/03/1994","243-4181 Pharetra Avenue","F","(Magtf)","vel@yahoo.ca","343 1746932"),
+  ("GTYOPB09H27J246R","Ali","Snow","04/12/1969","208-6208 Lacus. Rd.","F","Clerk","sit.amet@icloud.com","348 3826401"),
+  ("HLALWR47H24O222M","Jonah","Dillard","04/01/1961","Ap #184-7801 Vehicula Av.","M","Fire","ut.odio.vel@protonmail.couk","536 4431192"),
+  ("HDNOPL16Q60L183Q","Amal","Wynn","01/05/1966","Ap #634-4212 Quisque Street","M","Marine","suspendisse.aliquet.sem@protonmail.net","346 5174243"),
+  ("WSFJPI26G13N674Z","Kristen","Henderson","20/10/1961","6921 Eu Av.","M","Attending","auctor.ullamcorper.nisl@google.org","343 3271717"),
+  ("OPLRVL85Y52J523G","Harrison","Holmes","29/09/1977","5867 Mi Rd.","F","Sheet","aliquam.iaculis@icloud.couk","346 2554350"),
+  ("CGVPGV51O82H445I","Joel","Castro","30/01/1965","334-5313 Orci Street","F","Sound","dis@hotmail.org","336 2543835382"),
+  ("DAKKDJ47G63Q335R","Tallulah","Bowman","14/10/1969","7495 Tortor Street","M","Stacker","nunc.id.enim@aol.ca","330 8165122881"),
+  ("ARMRCP18F18L686U","Joelle","Hutchinson","30/05/1970","Ap #670-9717 Commodo Ave","M","Metal","iaculis.enim.sit@google.com","337 3647234766"),
+  ("HDCNWW27A78C221N","Clinton","Merritt","29/04/1984","8688 Proin St.","M","Officer","diam.dictum@google.couk","313 6661281"),
+  ("XSSTKL34H21N313M","Phoebe","Pacheco","09/07/2001","Ap #525-1783 Consectetuer Ave","F","Compression","tincidunt.vehicula@google.org","346 9485011"),
+  ("NLBKFO38U18N287U","Kylynn","Vaughn","22/08/1999","242-4382 Risus Road","F","Adjuster","a.malesuada@aol.org","343 4249851"),
+  ("FAVMJF90E96Q015B","Nathaniel","Alvarado","10/03/1962","Ap #436-8947 Iaculis St.","M","Refuse","tristique.ac.eleifend@icloud.ca","335 4455621570"),
+  ("FLJGSZ41U18M160X","Damian","Ray","20/02/1979","P.O. Box 121, 5508 Libero Av.","M","Forestry","maecenas.libero.est@protonmail.couk","331 7560437864"),
+  ("FIZZKG81B47X211H","Callum","Gomez","29/09/1985","P.O. Box 713, 9837 Suspendisse Rd.","M","Geriatric","praesent.eu@outlook.com","341 1408277"),
+  ("PSIGOC29C19L059I","Alana","Spencer","21/11/1974","3091 Sit Road","F","Maintenance","pulvinar.arcu@hotmail.couk","001 0656358"),
+  ("BMSXBM00F25R385L","Rudyard","Waters","16/05/1979","8206 Aliquam Road","F","Fish","est.nunc@yahoo.couk","347 9435781"),
+  ("XWEZTH74V67K644D","Indigo","Schmidt","05/01/1993","186-3647 Penatibus St.","M","Radio","non@aol.edu","343 7083872"),
+  ("OYIOEZ45K74R847P","Carson","Buck","15/05/1970","Ap #530-3120 Nulla Street","M","Hay","dictum.phasellus@hotmail.couk","788 5873700"),
+  ("LMKLPK35U66J346H","Drake","Hall","24/09/1965","5457 Duis Rd.","M","Physical","maecenas.libero@icloud.ca","615 1156176"),
+  ("MFEHAK52Y25I253E","Cassady","Kerr","14/12/1968","3964 Non, Rd.","F","Technician","sem@icloud.net","341 2102754"),
+  ("GUSGLS29M25B687Q","Barbara","Webster","27/08/1965","Ap #597-4153 Bibendum Street","F","Task","eget.lacus@google.com","344 7831285"),
+  ("MHJCFW30J47W582T","Jenna","Cruz","29/04/1995","Ap #646-3772 Integer Street","M","Technician","consequat@yahoo.org","726 2662429"),
+  ("MNNVYH55E10V538P","Isaiah","Hughes","14/09/2002","Ap #932-2161 Amet Av.","M","Insurance","suspendisse.ac@hotmail.org","338 2589533319"),
+  ("GSUYBG84V12P414O","Maia","Guerra","28/11/1980","482-6420 Amet Street","M","Physical","ipsum@aol.net","647 6604149"),
+  ("CSZQQT66D62R595V","Aquila","Knight","30/12/1967","388-1333 Adipiscing Avenue","F","Maintenance","feugiat.non@aol.couk","333 8997645786"),
+  ("YGQINJ41N84E297P","Aurelia","Carlson","30/05/1981","P.O. Box 568, 3120 Taciti Rd.","F","Management","etiam.gravida@aol.couk","731 4831635"),
+  ("ECEQIR14E79T582M","Idola","Kaufman","24/02/1977","P.O. Box 448, 802 Rutrum St.","M","Clerk","feugiat.tellus@google.org","729 9783656"),
+  ("HGWMPE64E65B299W","Leonard","Carver","04/07/1964","P.O. Box 304, 5348 Placerat. Street","M","Wing","cras.lorem@hotmail.net","337 0621596453"),
+  ("EEEYJK02X54Y223S","Buffy","Emerson","30/11/1963","325-7355 Duis Av.","M","Family","ornare.lectus@outlook.ca","933 7434481"),
+  ("RYAOSX19X18J228E","David","Carter","09/06/1964","8182 Magna. Road","F","Leasing","a.scelerisque.sed@yahoo.edu","346 4302428"),
+  ("EJVETI79X36Y751Q","Chelsea","Neal","09/01/1971","4219 Mi Street","F","Operator","eleifend.non@google.ca","332 5396633033"),
+  ("RJAFXB96Y07S653V","Leo","Nieves","19/01/1983","909-907 Eu Rd.","M","Stacker","bibendum.sed@hotmail.ca","679 5461505"),
+  ("SSXJQQ19I62I866Y","Kyle","Savage","21/08/1987","544-9151 Orci Road","M","Conditioning","gravida.mauris@google.edu","335 4623859404"),
+  ("OXMEQH23B44Q621X","Lars","Weeks","12/03/1988","P.O. Box 336, 8133 Natoque Rd.","M","Refuse","eu@outlook.couk","268 4464274"),
+  ("OAXSVL13Q45X556U","Aurelia","English","21/12/1979","691-6475 Penatibus Avenue","F","Marine","euismod.mauris@google.ca","345 3511727"),
+  ("RNMOFI42R20V009K","Sade","Murray","03/06/1993","Ap #769-8864 Justo. Avenue","F","Assistant","risus.at.fringilla@yahoo.com","333 4838444928"),
+  ("YUTDIQ63Q65F742H","Hyacinth","Ramos","02/09/2001","669-9328 Semper Ave","M","Freight","arcu@icloud.edu","346 6056217"),
+  ("FKNUFC26E86N731U","Tashya","Rollins","05/04/2000","P.O. Box 243, 1423 Et, St.","M","Designer","mauris@icloud.ca","346 5715371"),
+  ("QLJQDR07X22U017V","Howard","Underwood","24/10/1971","661-6137 Amet Avenue","M","Attending","sapien@protonmail.net","501 2525943"),
+  ("SEKJCO46Q24A839T","Brooke","Hale","03/01/1968","4681 Eu Rd.","F","Specialist","orci.quis@hotmail.net","343 6506163"),
+  ("VIHHBQ86G21M884E","Hayden","Black","03/01/1995","Ap #909-8169 Cras Ave","F","Curve","morbi.non@hotmail.ca","278 6676735"),
+  ("YSIEFX77B31Q458Q","Pascale","Combs","21/11/1962","Ap #596-6757 Eu Av.","M","Clerk","praesent.eu@aol.com","334 6149748415"),
+  ("JVNTCF16Y80S271M","Shelly","Lawrence","04/09/1998","Ap #931-6997 Maecenas Street","M","Insurance","faucibus.ut@hotmail.couk","342 1236394"),
+  ("SFUFHT25L23O624F","Galvin","Casey","04/10/1993","1983 Ornare, Avenue","M","Guided","penatibus.et.magnis@google.couk","347 4422453"),
+  ("DVTYDJ08U43G452A","Hamish","Franks","12/10/1980","P.O. Box 733, 5414 Ac, Av.","F","Planner","semper.dui@yahoo.com","515 3548295"),
+  ("GMWJYY18C41N370Y","Ivor","Mckee","02/02/1970","Ap #658-2112 Nulla Road","F","Course","quis@google.ca","341 1127863"),
+  ("UYQUMX21J67T465F","Signe","Doyle","31/07/1991","Ap #214-5101 Dictum Ave","M","Clerk","ac@hotmail.net","331 8704527418"),
+  ("XWVJQL30S34S738O","Kieran","Wright","21/07/1961","Ap #237-3544 Pede Street","M","Maintenance","libero.lacus@hotmail.net","335 4467744223"),
+  ("JGGMSJ63T80B242K","Jaime","Stokes","31/12/2002","Ap #884-7510 Magna. St.","M","Fire","ac.turpis@google.ca","342 1981085"),
+  ("YQRJXR36T89M317Y","Warren","Dunlap","16/04/1971","P.O. Box 220, 1367 Tempor Street","F","Sheet","dictum.ultricies@hotmail.org","343 2715528"),
+  ("GODYXI90L28S962A","Derek","Hahn","24/03/1969","Ap #440-5854 Mi. Rd.","F","Design","auctor.quis.tristique@google.ca","336 3982832366"),
+  ("POWXFA83N84S389I","Emerson","Avery","17/10/1986","899-6708 Bibendum. Ave","M","and","placerat@icloud.org","336 8731465817");
+
+
+
+INSERT INTO visita (Data,Ora,CF_Cliente,CF_Dottore)
+VALUES
+  ("08/04/2022","32:08","AQQGWB32D23C237M","HSMHVE57R92H535W"),
+  ("29/03/2022","02:02","VBBULC76D42D785B","HSMHVE57R92H535W"),
+  ("23/03/2022","03:09","XRURDP86C40T311M","TXREPW67X93O932T"),
+  ("29/04/2022","11:12","YZRBHM34R73L166M","TXREPW67X93O932T"),
+  ("24/04/2022","13:06","YZRBHM34R73L166M","TXREPW67X93O932T"),
+  ("17/04/2022","20:11","NWKDJV42O39G556U","HTSMEL51L47O268T"),
+  ("11/03/2022","54:09","VGYOUO66K16T383I","HTSMEL51L47O268T"),
+  ("11/03/2022","05:05","PZJXEQ75I55N721T","ETRKKF31X32T621B"),
+  ("23/03/2022","22:02","HSNTTU58J77S135G","ETRKKF31X32T621B"),
+  ("27/04/2022","30:08","DVGQUR26I89M588U","OXSLKH78K51U708G"),
+  ("21/03/2022","19:06","YZRBHM34R73L166M","OXSLKH78K51U708G"),
+  ("10/04/2022","32:02","VGYOUO66K16T383I","OXSLKH78K51U708G"),
+  ("20/03/2022","12:02","HSNTTU58J77S135G","TXREPW67X93O932T"),
+  ("24/04/2022","57:12","DVGQUR26I89M588U","ETRKKF31X32T621B"),
+  ("19/03/2022","48:05","DVGQUR26I89M588U","ETRKKF31X32T621B");
+
+
+
+INSERT INTO allenamento (Data,Ora,CF_Cliente,CF_Istruttore)
+VALUES
+  ("20/03/2022","00:05","OYIOEZ45K74R847P","JEUQMY69J35N080C"),
+  ("15/03/2022","36:10","LMKLPK35U66J346H","RJBGJW15X72O632H"),
+  ("07/04/2022","32:07","MFEHAK52Y25I253E","NVSWMG87H22G207F"),
+  ("19/04/2022","10:11","GUSGLS29M25B687Q","FLPJLH05P51V527D"),
+  ("17/04/2022","12:01","MHJCFW30J47W582T","IEGEIW06K82Q812B"),
+  ("15/04/2022","53:05","MNNVYH55E10V538P","FLPJLH05P51V527D"),
+  ("27/03/2022","45:04","GSUYBG84V12P414O","FLPJLH05P51V527D"),
+  ("15/03/2022","41:08","CSZQQT66D62R595V","IEGEIW06K82Q812B"),
+  ("06/03/2022","36:09","YGQINJ41N84E297P","NVSWMG87H22G207F"),
+  ("31/03/2022","46:08","DVGQUR26I89M588U","FLPJLH05P51V527D"),
+  ("11/03/2022","07:12","MNNVYH55E10V538P","NVSWMG87H22G207F"),
+  ("26/04/2022","37:04","GSUYBG84V12P414O","NVSWMG87H22G207F"),
+  ("03/03/2022","24:08","CSZQQT66D62R595V","IEGEIW06K82Q812B"),
+  ("17/03/2022","08:10","YGQINJ41N84E297P","RJBGJW15X72O632H"),
+  ("24/04/2022","11:11","DVGQUR26I89M588U","IEGEIW06K82Q812B"),
+  ("11/03/2022","04:02","OYIOEZ45K74R847P","JEUQMY69J35N080C"),
+  ("29/03/2022","44:01","LMKLPK35U66J346H","JEUQMY69J35N080C"),
+  ("19/03/2022","28:01","MFEHAK52Y25I253E","RJBGJW15X72O632H"),
+  ("07/03/2022","23:01","GUSGLS29M25B687Q","JEUQMY69J35N080C"),
+  ("29/03/2022","57:01","MHJCFW30J47W582T","JEUQMY69J35N080C");
+
+
+
+INSERT INTO corso (NomeCorso,Descrizione)
+VALUES
+  ("sem","rutrum non, hendrerit id, ante. Nunc mauris sapien, cursus in,"),
+  ("tincidunt","non lorem vitae odio sagittis semper. Nam tempor diam dictum"),
+  ("tristique","rutrum lorem ac risus. Morbi metus. Vivamus euismod urna. Nullam"),
+  ("mollis","elementum, lorem ut aliquam iaculis, lacus pede sagittis augue, eu"),
+  ("vulputate","et magnis dis parturient montes, nascetur ridiculus mus. Aenean eget"),
+  ("ante","at pretium aliquet, metus urna convallis erat, eget tincidunt dui"),
+  ("diam","auctor vitae, aliquet nec, imperdiet nec, leo. Morbi neque tellus,"),
+  ("antess","Curae Donec tincidunt. Donec vitae erat vel pede blandit congue."),
+  ("pede","libero est, congue a, aliquet vel, vulputate eu, odio. Phasellus"),
+  ("In","est. Nunc ullamcorper, velit in aliquet lobortis, nisi nibh lacinia");
+
+
+
+INSERT INTO corso_attivo (Anno,NomeCorso,CF_Istruttore)
+VALUES
+(2022,"sem","JEUQMY69J35N080C"),
+(2022,"tincidunt","RJBGJW15X72O632H"),
+(2022,"tristique","TFQBEA83O87B334Q"),
+(2022,"mollis","RSWNHX86Q25J811M"),
+(2022,"vulputate","DKFRBE51W59V512F");
+
+
+
+INSERT INTO iscrizione (CF_Cliente,Anno,NomeCorso)
+VALUES
+("YSIEFX77B31Q458Q","2022","sem"),
+("VIHHBQ86G21M884E","2022","sem"),
+("SEKJCO46Q24A839T","2022","sem"),
+("QLJQDR07X22U017V","2022","sem"),
+("FKNUFC26E86N731U","2022","sem"),
+("UYQUMX21J67T465F","2022","mollis"),
+("GMWJYY18C41N370Y","2022","mollis"),
+("DVTYDJ08U43G452A","2022","mollis"),
+("SFUFHT25L23O624F","2022","mollis"),
+("JVNTCF16Y80S271M","2022","mollis"),
+("POWXFA83N84S389I","2022","tristique"),
+("GODYXI90L28S962A","2022","tristique"),
+("YQRJXR36T89M317Y","2022","tristique"),
+("JGGMSJ63T80B242K","2022","tincidunt"),
+("XWVJQL30S34S738O","2022","tincidunt"),
+("YUTDIQ63Q65F742H","2022","tincidunt"),
+("RNMOFI42R20V009K","2022","vulputate"),
+("OAXSVL13Q45X556U","2022","vulputate"),
+("OXMEQH23B44Q621X","2022","vulputate"),
+("SSXJQQ19I62I866Y","2022","vulputate");
+
+
+INSERT INTO Lezione (Sala,GiornoSettimana,Ora,NomeCorso,Anno)
+VALUES
+  ("6","7","23:03","sem","2022"),
+  ("8","6","47:06","mollis","2022"),
+  ("3","5","56:10","sem","2022"),
+  ("3","3","05:12","sem","2022"),
+  ("7","3","08:01","tincidunt","2022"),
+  ("3","3","01:06","mollis","2022"),
+  ("3","4","03:08","tincidunt","2022"),
+  ("1","4","18:03","tristique","2022"),
+  ("8","6","47:09","tincidunt","2022"),
+  ("6","5","36:07","mollis","2022"),
+  ("3","2","17:08","tristique","2022"),
+  ("8","6","01:06","vulputate","2022"),
+  ("4","3","51:12","vulputate","2022"),
+  ("2","4","50:08","vulputate","2022"),
+  ("5","7","20:05","tristique","2022");
